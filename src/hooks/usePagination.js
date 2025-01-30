@@ -1,11 +1,5 @@
-/**
- * 페이지네이션을 위한 커스텀 훅
- * page, limit, total, startPage, pageSize, hasNext, hasPrev
- */
-
 import { useState } from "react";
 
-//
 const usePagination = (pageSize = 5, initialLimit = 20) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(initialLimit);
