@@ -1,6 +1,6 @@
 import store from "@/redux/store";
 import axios from "axios";
-import storage from "../local/local-storage";
+import storage from "../../local/admin/local-storage";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/api/admin/v1/",
