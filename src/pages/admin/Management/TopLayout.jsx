@@ -1,4 +1,4 @@
-import storage from "@/app/local/local-storage";
+import storage from "@/app/local/admin/local-storage";
 import Buttons from "@/components/Buttons";
 import { clear } from "@/redux/login-user-store";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,7 +47,7 @@ const TopLayout = () => {
                 className={(navData) =>
                   navData.isActive ? "ui-link primary active" : "ui-link primary"
                 }
-                to="/operator/members"
+                to="/admin/members"
               >
                 회원관리
               </NavLink>
@@ -55,7 +55,10 @@ const TopLayout = () => {
                 멘토관리
               </NavLink>
               <NavLink className="ui-link primary" to="/admin/sales">
-                매출관리
+                매출관리(상품/정산/이벤트)
+              </NavLink>
+               <NavLink className="ui-link primary" to="/admin/sales">
+                게시물관리
               </NavLink>
             </nav>
           </div>
