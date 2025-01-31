@@ -1,4 +1,5 @@
 import storage from "@/app/local/admin/local-storage";
+import ServiceAuth from "@/app/service/admin/service-auth";
 import Buttons from "@/components/Buttons";
 import { clear } from "@/redux/login-user-store";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,12 +28,16 @@ const TopLayout = () => {
   }
 
   const onClickLogout = async () => {
-    dispatch(clear());
+  try {
+    await ServiceAuth.logout(); 
+    dispatch(clear()); 
     storage.loginedId.set("");
     storage.loginedToken.set("");
-
     navigate("/login");
-  };
+  } catch (error) {
+    console.log("로그아웃 실패. 다시 시도해주세요."); 
+  }
+};
 
   if (loginUser)
     return (

@@ -11,4 +11,13 @@ const postLogin = async (data) => {
   return res.data;
 };
 
-export { postLogin };
+const postLogout = async (token) => {
+  const res = await axios.post(`http://localhost:8080/api/admin/v1/logout`, null, {
+    headers: {
+      "Authorization": token, // 🔥 서버에 토큰 포함하여 로그아웃 요청
+    },
+  });
+
+  return res.data;
+};
+export { postLogin, postLogout };
