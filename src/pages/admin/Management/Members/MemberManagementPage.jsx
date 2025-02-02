@@ -8,6 +8,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useCollapse } from "react-collapsed";
 import { NavLink } from "react-router-dom";
 import Split from "react-split";
+import MemberManagementProvider from "./context/MemberManagementProvider";
+import MemberForm from "./common/MemberForm";
+import MemberDetailTabs from "./MemberDetail/MemberDetailTabs";
 
 
 // 회원관리(1depth) > 회원관리(2depth)
@@ -34,9 +37,13 @@ const MemberManagementPage = () => {
   const [clickedMember, setClickedMember] = useState(null);
   const [sortTarget, setSortTarget] = useState();
   const [direction, setDirection] = useState(false);
+  const [initialDetailTabsLabel, setInitialDetailTabsLabel] = useState(null);
 
   const { getCollapseProps } = useCollapse({ isExpanded });
-
+  
+  const onChangeDetailTabsLabel = (tab) => {
+    setInitialDetailTabsLabel(tab);
+  };
 
   // 검색 조건 request data 만들기
   const makeSearchCondition = useCallback(() => {
@@ -420,6 +427,26 @@ const MemberManagementPage = () => {
           </div>
         </div>
       </section>
+          <MemberManagementProvider
+        refreshMemberList={searchMemberList}
+        onDeletedMember={() => setClickedMember(null)}
+      >
+        {clickedMember === null ? (
+          <div className="ui-contents-wrap inner-shadow">
+            <div className="ui-contents-inner">
+              <div className="layout-contents-width">
+                <MemberForm />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <MemberDetailTabs
+            member={clickedMember}
+            initialLabel={initialDetailTabsLabel}
+            onChangeDetailTabsLabel={onChangeDetailTabsLabel}
+          />
+        )}
+      </MemberManagementProvider>
      
     </Split>
   );
