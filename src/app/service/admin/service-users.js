@@ -2,6 +2,7 @@ import {
   getUsers,
   postUser,
   getUser,
+  putUser
 } from "../../remote/admin/api-users";
 
 const TAG = "[service-users]";
@@ -23,9 +24,13 @@ const ServiceMember = {
   },
 
   get: (id) => {
-    console.log(`여기 들어오는지`)
     console.log(TAG, "get", "id", id);
     return getUser(id);
+  },
+
+  update: (id, data) => {
+    console.log(TAG, "updateUser", "id", id, "data", data);
+    return putUser(id, data);
   }
 };
 

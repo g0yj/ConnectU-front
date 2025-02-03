@@ -22,4 +22,11 @@ const getUser = async (id) => {
   const res = await api.get(`/users/${id}`);
   return res.data;
 }
-export {getUsers, postUser, getUser};
+
+// [PUT]/users
+const putUser = async (id, requestBody) => {
+  console.log(TAG, `putUser([PUT]/users/{id})`, "id", id, "requestBody", requestBody);
+  const res = await api.put(`/users/${id}`, requestBody);
+  return res.data;
+};
+export {getUsers, postUser, getUser, putUser};

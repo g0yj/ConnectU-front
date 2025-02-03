@@ -8,9 +8,9 @@ import ServiceMember from "@/app/service/admin/service-users";
 const CoursePurposesList = [
   { key: "STUDY_ABROAD", title: "유학" },
   { key: "TEST", title: "시험" },
-  { key: "WORK", title: "취업" },
-  { key: "EMPLOYMENT", title: "현재업무상 필요" },
-  { key: "DEVELOPMENT", title: "중장기 자기개발" },
+  { key: "WORK", title: "업무" },
+  { key: "EMPLOYMENT", title: "취업" },
+  { key: "DEVELOPMENT", title: "자기개발" },
 ];
 
 const MemberForm = ({ data }) => {
@@ -56,10 +56,7 @@ const MemberForm = ({ data }) => {
   };
 
   const onSubmit = async (e) => {
-
-    console.log(`onsubmit 클릭`);
     e.preventDefault();
-
     if (
       !name ||
       !loginId ||
@@ -89,6 +86,8 @@ const MemberForm = ({ data }) => {
       type: "S",
     };
 
+    console.log(saveData);
+
     if (forRegister) {
       try {
         await ServiceMember.register(saveData);
@@ -100,8 +99,9 @@ const MemberForm = ({ data }) => {
       }
     } else {
       try {
+        await ServiceMember.update(data.id, saveData);
+        if (refreshMemberList) refreshMemberList();
         alert("회원정보가 수정되었습니다.");
-  
       } catch (error) {
         console.error(error);
       }
@@ -199,7 +199,7 @@ const MemberForm = ({ data }) => {
               </Buttons>
 
               <div className="flex gap" style={{ marginLeft: 10 }}>
-                <Buttons type="submit" className="grey-light small" >
+                <Buttons type="submit" className="grey-light small" onClick ={onSubmit}>
                   수정
                 </Buttons>
                 <Buttons type="button" className="grey small">
