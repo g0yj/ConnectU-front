@@ -22,4 +22,19 @@ api.interceptors.request.use(
 );
 
 
+// 에러 응답을 자동으로 처리하는 인터셉터
+api.interceptors.response.use(
+  (response) => response, // 정상 응답 그대로 반환
+  (error) => {
+    if (error.response) {
+      const errorMessage = error.response.data.message;
+      alert(errorMessage); // alert 표시
+    } else {
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
+    }
+    return Promise.reject(error);
+  }
+);
+
+
 export { api};
