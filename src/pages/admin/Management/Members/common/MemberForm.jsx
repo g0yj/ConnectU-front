@@ -108,6 +108,22 @@ const MemberForm = ({ data }) => {
     }
   };
 
+  const onClickDelete = () => {
+    if (window.confirm("삭제하겠습니까?")) {
+      deleted(data.id);
+    }
+  }
+
+  const deleted = async (id) => {
+    try {
+      await ServiceMember.delete(id);
+      alert('삭제에 성공하였습니다');
+      refreshMemberList();
+      onDeletedMember();
+    } catch (e) {
+      alert(e.massage);
+    }
+  }
 
   const open = useDaumPostcodePopup();
 
@@ -202,7 +218,7 @@ const MemberForm = ({ data }) => {
                 <Buttons type="submit" className="grey-light small" onClick ={onSubmit}>
                   수정
                 </Buttons>
-                <Buttons type="button" className="grey small">
+                <Buttons type="button" className="grey small" onClick={onClickDelete}>
                   삭제
                 </Buttons>
               </div>
@@ -550,7 +566,7 @@ const MemberForm = ({ data }) => {
           )}
 
           {!forRegister && (
-            <Buttons type="button" className="grey small">
+            <Buttons type="button" className="grey small" onClick={onClickDelete}>
               삭제
             </Buttons>
           )}

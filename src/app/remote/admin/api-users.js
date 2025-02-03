@@ -29,4 +29,11 @@ const putUser = async (id, requestBody) => {
   const res = await api.put(`/users/${id}`, requestBody);
   return res.data;
 };
-export {getUsers, postUser, getUser, putUser};
+
+//[DELETE]/users/{id}
+const deleteUser = async (id) => {
+  console.log(TAG, `deleteUser([DELETE]/users)`, "id", id);
+  const res = await api.delete(`/users/${id}`);
+  return res.data;
+}
+export {getUsers, postUser, getUser, putUser, deleteUser};

@@ -2,7 +2,8 @@ import {
   getUsers,
   postUser,
   getUser,
-  putUser
+  putUser,
+  deleteUser
 } from "../../remote/admin/api-users";
 
 const TAG = "[service-users]";
@@ -31,7 +32,12 @@ const ServiceMember = {
   update: (id, data) => {
     console.log(TAG, "updateUser", "id", id, "data", data);
     return putUser(id, data);
-  }
+  },
+
+  delete: (id) => {
+    console.log(TAG, "deleteUser", "id", id);
+    return deleteUser(id);
+  }  
 };
 
 export default ServiceMember;
