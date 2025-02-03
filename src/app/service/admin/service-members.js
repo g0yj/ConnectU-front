@@ -1,5 +1,7 @@
 import {
   getUsers,
+  postUser,
+
 } from "../../remote/admin/api-users";
 
 const TAG = "[service-members]";
@@ -14,6 +16,11 @@ const ServiceMember = {
     console.log(TAG, "getMemberList", "data", data);
     return getUsers(data);
   },
+
+  register: (data) => {
+    console.log(TAG, "register", "data", data)
+    return postUser(data);
+  }
 };
 
 export default ServiceMember;

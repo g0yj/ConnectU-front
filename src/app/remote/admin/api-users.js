@@ -2,12 +2,19 @@ import { api } from "./api.js";
 
 const TAG = "[api-users]";
 
-// [GET]/users
+// [GET] /users
 const getUsers = async (requestParams) => {
   console.log(TAG, `getUsers([GET]/users)`, "requestParams", requestParams);
   const res = await api.get(`/users`, { params: requestParams });
   return res.data;
-};
+}
+  // [POST] /users
+  const postUser = async (requestBody) => {
+    console.log(TAG, `registerUser([POST]/users)`, "requestBody", requestBody);
+    const res = await api.post(`/users`, requestBody);
+    return res.data;
 
 
-export {getUsers};
+}
+
+export {getUsers, postUser};
