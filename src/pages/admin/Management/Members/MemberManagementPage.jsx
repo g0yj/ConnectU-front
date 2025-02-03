@@ -1,4 +1,4 @@
-import ServiceMember from "@/app/service/admin/service-members";
+import ServiceMember from "@/app/service/admin/service-users";
 import Buttons from "@/components/Buttons";
 import DatePicker from "@/components/DatePicker";
 import PageNations from "@/components/PageNations";
@@ -26,10 +26,9 @@ const MemberManagementPage = () => {
   const [teacherId, setTeacherId] = useState("");
   const [remainingType, setRemainingType] = useState("ALL");
   const [expireType, setExpireType] = useState("ALL");
-
   const [totalCount, setTotalCount] = useState(0);
   const [memberList, setMemberList] = useState([]);
-  const [teacherList, setTeacherList] = useState([]);
+ 
 
 
   const [isSelectedAll, setIsSelectedAll] = useState(false);
@@ -116,6 +115,11 @@ const MemberManagementPage = () => {
     if (e.key === 'Enter') {
       onClickSearchBtn();
     }
+  }
+
+  const onClickMemberName = (member) => {
+    setInitialDetailTabsLabel(initialDetailTabsLabel);
+    setClickedMember(member);
   }
 
   useEffect(() => {
@@ -379,7 +383,7 @@ const MemberManagementPage = () => {
                       <td>
                         <Buttons
                           className="ui-link secondary-high small"
-                          
+                          onClick={() => onClickMemberName(member)}
                         >
                           {member.name}
                         </Buttons>

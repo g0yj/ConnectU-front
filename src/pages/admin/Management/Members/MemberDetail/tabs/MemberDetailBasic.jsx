@@ -1,4 +1,4 @@
-import ServiceMember from "@/app/service/admin/service-members";
+import ServiceMember from "@/app/service/admin/service-users";
 import { useEffect, useState } from "react";
 import MemberForm from "../../common/MemberForm";
 

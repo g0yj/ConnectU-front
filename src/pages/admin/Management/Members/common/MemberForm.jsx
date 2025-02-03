@@ -3,7 +3,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { useCollapse } from "react-collapsed";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { MemberManagementContext } from "../context/MemberManagementProvider";
-import ServiceMember from "@/app/service/admin/service-members";
+import ServiceMember from "@/app/service/admin/service-users";
 
 const CoursePurposesList = [
   { key: "STUDY_ABROAD", title: "유학" },
