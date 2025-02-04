@@ -11,6 +11,7 @@ import Split from "react-split";
 import MemberManagementProvider from "./context/MemberManagementProvider";
 import MemberForm from "./common/MemberForm";
 import MemberDetailTabs from "./MemberDetail/MemberDetailTabs";
+import ExcelDownloader from "@/components/ExcelDownloader";
 
 
 // 회원관리(1depth) > 회원관리(2depth)
@@ -28,7 +29,7 @@ const MemberManagementPage = () => {
   const [expireType, setExpireType] = useState("ALL");
   const [totalCount, setTotalCount] = useState(0);
   const [memberList, setMemberList] = useState([]);
- 
+  const [excelList, setExcelList] = useState([]);
 
 
   const [isSelectedAll, setIsSelectedAll] = useState(false);
@@ -53,7 +54,6 @@ const MemberManagementPage = () => {
       createDateTo: endDate ? dayjs(endDate).format("YYYY-MM-DD") : "",
       search,
       keyword,
-      teacherId,
       remainingType,
       expireType,
       type: "S",
@@ -65,7 +65,25 @@ const MemberManagementPage = () => {
     paginationData.page,
     search,
     startDate,
-    teacherId,
+    remainingType,
+    expireType,
+  ]);
+
+  const makeExcelData = useCallback(() => {
+    return {
+      createDateFrom: startDate ? dayjs(startDate).format("YYYY-MM-DD") : "",
+      createDateTo: endDate ? dayjs(endDate).format("YYYY-MM-DD") : "",
+      search,
+      keyword,
+      remainingType,
+      expireType,
+      type: "S",
+    };
+  }, [
+    endDate,
+    keyword,
+    search,
+    startDate,
     remainingType,
     expireType,
   ]);
@@ -81,6 +99,13 @@ const MemberManagementPage = () => {
   }, [makeSearchCondition, paginationData]);
 
 
+  const excelDownload = useCallback(async () => {
+    const saveData = makeExcelData();
+    const data = await ServiceMember.excel(saveData);
+    console.log(data);
+    setExcelList(data);
+  })
+  
   
   // 캘린더 버튼 클릭 기능들
   const onClickCalendarClearBtn = () => {
@@ -108,6 +133,7 @@ const MemberManagementPage = () => {
 
   const onClickSearchBtn = () => {
     searchMemberList();
+    excelDownload();
   };
 
 
@@ -131,6 +157,16 @@ const MemberManagementPage = () => {
     startDate,
     endDate,
     teacherId,
+    remainingType,
+    expireType,
+  ]);
+
+  useEffect(() => {
+    excelDownload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    startDate,
+    endDate,
     remainingType,
     expireType,
   ]);
@@ -338,6 +374,7 @@ const MemberManagementPage = () => {
             </div>
 
             <div className="gap-s">
+              <ExcelDownloader data = {excelList} fileName= "회원목록" sheetName="Users" />
               <Buttons className="outlined small">
                 메일발송
               </Buttons>

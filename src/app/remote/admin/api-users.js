@@ -36,4 +36,11 @@ const deleteUser = async (id) => {
   const res = await api.delete(`/users/${id}`);
   return res.data;
 }
-export {getUsers, postUser, getUser, putUser, deleteUser};
+
+//[GET] /users/excel
+const excelUsers = async (requestParams) => {
+  console.log(TAG, `excelUsers([GET]/users/excel)`, "requestParams", requestParams);
+  const res = await api.get(`/users/excel`, { params: requestParams });
+  return res.data;
+}
+export {getUsers, postUser, getUser, putUser, deleteUser, excelUsers};
