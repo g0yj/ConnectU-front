@@ -6,6 +6,7 @@ import MemberLayout from "./pages/admin/Management/Members/MemberLayout";
 import MemberManagementPage from "./pages/admin/Management/Members/MemberManagementPage";
 import { WINDOWS } from "./app/helper/helper-window";
 import SendEmailModal from "./pages/admin/Modal/SendEmailModal";
+import SendSmsModal from "./pages/admin/Modal/SendSmsModal";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
         path: WINDOWS.SEND_EMAIL.url,
         element: <SendEmailModal/>,
     },
+    {
+    path: WINDOWS.SEND_SMS.url,
+    element: <SendSmsModal />,
+  },
 
 ])
 

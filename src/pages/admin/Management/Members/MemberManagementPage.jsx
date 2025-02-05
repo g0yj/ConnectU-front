@@ -13,11 +13,13 @@ import MemberForm from "./common/MemberForm";
 import MemberDetailTabs from "./MemberDetail/MemberDetailTabs";
 import ExcelDownloader from "@/components/ExcelDownloader";
 import useEmailWindow from "@/app/helper/windows-hooks/use-email-window";
+import useSmsWindow from "@/app/helper/windows-hooks/use-sms-window";
 
 
 // 회원관리(1depth) > 회원관리(2depth)
 const MemberManagementPage = () => {
   const { openEmailWindow } = useEmailWindow();
+  const { openSmsWindow } = useSmsWindow();
   const [isExpanded, setExpanded] = useState(true);
   const paginationData = usePagination();
 
@@ -168,9 +170,12 @@ const onClickMemberCheckbox = (evt, member) => {
   });
   };
   const onClickSendEmail = () => {
-    openEmailWindow(selectedMemberList); // 선택된 멤버 목록을 openEmailWindow로 전달
+    openEmailWindow(selectedMemberList); //멤버 목록을 openEmailWindow로 전달
   };
   
+  const onClickSendSms = () => {
+    openSmsWindow(selectedMemberList);
+  }
 
   useEffect(() => {
     searchMemberList();
@@ -412,7 +417,10 @@ const onClickMemberCheckbox = (evt, member) => {
               >
                 메일발송
               </Buttons>
-              <Buttons className="outlined small" >
+              <Buttons
+                className="outlined small"
+                onClick={onClickSendSms}
+              >
                 SMS발송
               </Buttons>
             </div>

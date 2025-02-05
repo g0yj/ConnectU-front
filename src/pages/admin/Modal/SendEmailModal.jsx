@@ -2,9 +2,7 @@ import useEmailWindow from "@/app/helper/windows-hooks/use-email-window";
 import ServiceCommon from "@/app/service/admin/service-common";
 import Buttons from "@/components/Buttons";
 import { useEffect, useRef, useState } from "react";
-import usePreviewWindow from "@/app/helper/windows-hooks/use-preview-window";
 import "@toast-ui/editor/dist/toastui-editor.css"
-import color from '@toast-ui/editor-plugin-color-syntax';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import { Editor } from "@toast-ui/react-editor";
@@ -13,19 +11,14 @@ import { Editor } from "@toast-ui/react-editor";
  * 이메일 발송 모달
  */
 const SendEmailModal = () => {
-  console.log('이메일 모달창 열림');
+
   const { memberList } = useEmailWindow();
 
   console.log('이메일 발송 모달에서의 memberList ', memberList);
 
-  // 발신자 이메일
-  const [senderEmail] = useState("desk@englishchannel.co.kr");
-  // 이메일 제목
   const [title, setTitle] = useState("");
-  // 이메일 내용
   const [content, setContent] = useState("");
   const [recipients, setRecipients] = useState([]);
-  //const [selectedMember, setSelectedMember] = useState([]);
 
   const editorRef = useRef(null);
 
@@ -41,8 +34,6 @@ const SendEmailModal = () => {
         return;
       }
 
-      console.log("Recipients: ", recipients);
-
       if (!Array.isArray(recipients)) {
         alert("수신자 목록이 올바르지 않습니다");
         return;
@@ -53,7 +44,7 @@ const SendEmailModal = () => {
       const saveData = {
         title,
         content,
-        recipients: recipients.map((member) => ({ name: member.name, email: member.email })),
+        recipients: recipients.map((member) => ({ id: member.id, name: member.name, email: member.email })),
       };
       await ServiceCommon.sendEmail(saveData);
       alert("메일 발송이 완료되었습니다.");
@@ -63,13 +54,6 @@ const SendEmailModal = () => {
     }
   };
 
-useEffect(() => {
-  console.log("Updated recipients: ", recipients);
-  console.log("Is recipients an array?: ", Array.isArray(recipients));
-  if (!Array.isArray(recipients)) {
-    alert("수신자 목록이 올바르지 않습니다");
-  }
-}, [recipients]); // recipients가 변경될 때마다 실행
 
   useEffect(() => {
     setRecipients(memberList);
@@ -96,18 +80,12 @@ useEffect(() => {
                       className="input-init"
                       multiple
                       style={{ width: "100%" }}
-                      onChange={({ target }) => {
-                        const selectedValues = Array.from(target.options)
-                          .filter((option) => option.selected)
-                          .map((option) => option.value);
-                        setSelectedMember(selectedValues);
-                      }}
                     >
                       {!!recipients &&
                         recipients.map((member, idx) => (
                           <option key={member.name + idx}>
                             {member.name}
-                            {member.email}
+                            ({member.email})
                           </option>
                         ))}
                     </select>
