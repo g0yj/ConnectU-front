@@ -11,6 +11,8 @@ const WINDOW_FEATURE = {
 const WINDOWS = {
   SEND_PREVIEW: { id: "SendPreview", url: "/admin/send-preview", options: WINDOW_FEATURE.REGISTER_RESV },
   SEND_EMAIL: { id: "SendEmail", url: "/admin/send-email", options: WINDOW_FEATURE.COMMON },
+  SEND_SMS: { id: "SendSms", content: "content", url: "/admin/send-sms", options: WINDOW_FEATURE.COMMON },
+
 };
 
 let openWindows = {};

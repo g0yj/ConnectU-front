@@ -7,9 +7,8 @@ import { useEffect } from "react";
  * @returns {{memberList: Array, openEmailWindow: Function}}
  */
 const useEmailWindow = () => {
-  console.log('userEmailWindow 열림')
+
   const [memberList, setMemberList] = useCrossTab(WINDOWS.SEND_EMAIL.id, []);
-  console.log('선언된 memberList', memberList);
   /**
    *
    * @param {Array} memberList // 선택된 회원 리스트
@@ -30,7 +29,7 @@ const useEmailWindow = () => {
   useEffect(() => {
     if (memberList.length > 0) {
       console.log('memberList가 업데이트됨: ', memberList);
-      // memberList가 업데이트된 후 필요한 작업을 추가할 수 있습니다.
+      // memberList가 업데이트된 후 필요한 작업을 추가
     }
   }, [memberList]); // memberList가 변경될 때마다 실행
 
