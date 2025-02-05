@@ -12,31 +12,33 @@ import MemberManagementProvider from "./context/MemberManagementProvider";
 import MemberForm from "./common/MemberForm";
 import MemberDetailTabs from "./MemberDetail/MemberDetailTabs";
 import ExcelDownloader from "@/components/ExcelDownloader";
+import useEmailWindow from "@/app/helper/windows-hooks/use-email-window";
 
 
 // 회원관리(1depth) > 회원관리(2depth)
 const MemberManagementPage = () => {
-
+  const { openEmailWindow } = useEmailWindow();
   const [isExpanded, setExpanded] = useState(true);
-
   const paginationData = usePagination();
+
+  // 목록조회 조건
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [search, setSearch] = useState("ALL");
   const [keyword, setKeyword] = useState("");
-  const [teacherId, setTeacherId] = useState("");
   const [remainingType, setRemainingType] = useState("ALL");
   const [expireType, setExpireType] = useState("ALL");
   const [totalCount, setTotalCount] = useState(0);
+  // 조회된 회원 목록
   const [memberList, setMemberList] = useState([]);
-  const [excelList, setExcelList] = useState([]);
+  const [excelList, setExcelList] = useState([]); // 페이징처리X
 
-
+  // 체크박스 관련
   const [isSelectedAll, setIsSelectedAll] = useState(false);
-  const [selectedMemberList, setSelectedMemberList] = useState([]);
+  const [selectedMemberList, setSelectedMemberList] = useState([]); // 체크박스 선택된 사람들
+  
   const [clickedMember, setClickedMember] = useState(null);
-  const [sortTarget, setSortTarget] = useState();
-  const [direction, setDirection] = useState(false);
+  
   const [initialDetailTabsLabel, setInitialDetailTabsLabel] = useState(null);
 
   const { getCollapseProps } = useCollapse({ isExpanded });
@@ -92,8 +94,8 @@ const MemberManagementPage = () => {
   const searchMemberList = useCallback(async () => {
     const saveData = makeSearchCondition();
     const data = await ServiceMember.getList(saveData);
-    setTotalCount(data.totalCount); 
-    paginationData.setTotalPage(data.totalPage); 
+    setTotalCount(data.totalCount);
+    paginationData.setTotalPage(data.totalPage);
 
     setMemberList(data.list); // 회원 목록 표시용
   }, [makeSearchCondition, paginationData]);
@@ -113,7 +115,6 @@ const MemberManagementPage = () => {
     setEndDate(null);
     setSearch("ALL");
     setKeyword("");
-    setTeacherId("");
   };
   const onClickCalendarThisMonthBtn = () => {
     const now = new Date();
@@ -148,6 +149,29 @@ const MemberManagementPage = () => {
     setClickedMember(member);
   }
 
+  // 회원 체크박스 클릭 기능
+const onClickMemberCheckbox = (evt, member) => {
+  console.log('체크박스 클릭 메서드 실행');
+
+  setSelectedMemberList((prevSelectedMemberList) => {
+    if (evt.target.checked) {
+      // 체크박스가 선택되었을 때: member를 배열에 추가
+      const newList = [...prevSelectedMemberList, member];
+      console.log('선택된 멤버 배열> ', newList);
+      return newList;
+    } else {
+      // 체크박스가 선택 취소되었을 때: member를 배열에서 제거
+      const newList = prevSelectedMemberList.filter((m) => m !== member);
+      console.log('선택된 멤버 배열> ', newList);
+      return newList;
+    }
+  });
+  };
+  const onClickSendEmail = () => {
+    openEmailWindow(selectedMemberList); // 선택된 멤버 목록을 openEmailWindow로 전달
+  };
+  
+
   useEffect(() => {
     searchMemberList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -156,7 +180,6 @@ const MemberManagementPage = () => {
     paginationData.limit,
     startDate,
     endDate,
-    teacherId,
     remainingType,
     expireType,
   ]);
@@ -171,6 +194,14 @@ const MemberManagementPage = () => {
     expireType,
   ]);
 
+  useEffect(() => {
+    if (isSelectedAll) {
+      setSelectedMemberList([...memberList]);
+    } else {
+      setSelectedMemberList([]);
+      console.log('배열데이터확인', selectedMemberList);
+    }
+  }, [isSelectedAll, memberList]);
 
   return (
     <Split className="lib-split" sizes={[54, 46]} key={clickedMember?.id}>
@@ -375,7 +406,10 @@ const MemberManagementPage = () => {
 
             <div className="gap-s">
               <ExcelDownloader data = {excelList} fileName= "회원목록" sheetName="Users" />
-              <Buttons className="outlined small">
+              <Buttons
+                className="outlined small"
+                onClick ={onClickSendEmail}
+              >
                 메일발송
               </Buttons>
               <Buttons className="outlined small" >
@@ -457,6 +491,7 @@ const MemberManagementPage = () => {
                         <input
                           type="checkbox"
                           checked={selectedMemberList.includes(member)}
+                          onChange={ (e) => onClickMemberCheckbox(e, member)}
                         />
                       </td>
                     </tr>

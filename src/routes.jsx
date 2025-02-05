@@ -3,7 +3,9 @@ import LoginPage from "./pages/admin/Login/LoginPage";
 import RootPage from "./pages/RootPage";
 import TopLayout from "./pages/admin/Management/TopLayout";
 import MemberLayout from "./pages/admin/Management/Members/MemberLayout";
-import MemberManagementPage from "./pages/admin/Management/Members/MemberTab/MemberManagementPage";
+import MemberManagementPage from "./pages/admin/Management/Members/MemberManagementPage";
+import { WINDOWS } from "./app/helper/helper-window";
+import SendEmailModal from "./pages/admin/Modal/SendEmailModal";
 
 const router = createBrowserRouter([
     {
@@ -29,7 +31,12 @@ const router = createBrowserRouter([
                 ]
             }
         ]
-    }
+    },
+    {
+        path: WINDOWS.SEND_EMAIL.url,
+        element: <SendEmailModal/>,
+    },
+
 ])
 
 export default router;
