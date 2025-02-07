@@ -7,6 +7,8 @@ import MemberManagementPage from "./pages/admin/Management/Members/MemberManagem
 import { WINDOWS } from "./app/helper/helper-window";
 import SendEmailModal from "./pages/admin/Modal/SendEmailModal";
 import SendSmsModal from "./pages/admin/Modal/SendSmsModal";
+import SalesLayout from "./pages/admin/Management/Sales/SalesLayout";
+import CompanyManagementPage from "./pages/admin/Management/Sales/Company/CompanyManagementPage";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +32,16 @@ const router = createBrowserRouter([
                         element: <MemberManagementPage/>
                     }
                 ]
+            },
+            {
+                path: "sales",
+                element: <SalesLayout />,
+                children: [
+                    {
+                        path: "companys",
+                        element: <CompanyManagementPage />
+                    }
+                ]
             }
         ]
     },
@@ -38,8 +50,8 @@ const router = createBrowserRouter([
         element: <SendEmailModal/>,
     },
     {
-    path: WINDOWS.SEND_SMS.url,
-    element: <SendSmsModal />,
+        path: WINDOWS.SEND_SMS.url,
+        element: <SendSmsModal />,
   },
 
 ])

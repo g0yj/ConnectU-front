@@ -15,18 +15,13 @@ const TopLayout = () => {
     return <Navigate to="/admin/members/member" replace={true} />;
   } else if (location.pathname === "/admin/members") {
     return <Navigate to="/admin/members/member" replace={true} />;
-  } else if (location.pathname === "/admin/teachers") {
-    return <Navigate to="/admin/teachers/teacher" replace={true} />;
-  } else if (location.pathname === "/admin/sales") {
-    return <Navigate to="/admin/sales/daily-sales" replace={true} />;
-  } else if (location.pathname === "class-schedule") {
-    return <Navigate to="/admin/class-schedule" replace={true} />;
-  } else if (location.pathname === "/admin/statistics") {
-    return <Navigate to="/admin/statistics/sms-status" replace={true} />;
-  } else if (location.pathname === "/admin/employee") {
-    return <Navigate to="/admin/employee" replace={true} />;
-  }
-
+  } else if (location.pathname === "/admin/employees") {
+    return <Navigate to="/admin/mentors/employee" replace={true} />;
+  } else if (location.pathname === "/admin/sales/company") {
+    return <Navigate to="/admin/sales/company" replace={true} />;
+  } else if (location.pathname === "/admin/boards") {
+    return <Navigate to="/admin/boards/board" replace={true} />;
+  } 
   const onClickLogout = async () => {
   try {
     await ServiceAuth.logout(); 
@@ -45,7 +40,7 @@ const TopLayout = () => {
         <header className="ui-header-wrap">
           <div>
             <NavLink className="ui-logo small">
-              <div className="title">English Channel</div>
+              <div className="title"> Connect YOU</div>
             </NavLink>
             <nav className="ui-gnb-wrap">
               <NavLink
@@ -56,13 +51,18 @@ const TopLayout = () => {
               >
                 회원관리
               </NavLink>
-              <NavLink className="ui-link primary" to="/admin/teachers">
-                멘토관리
+              <NavLink className="ui-link primary" to="/admin/employees">
+                직원관리
               </NavLink>
-              <NavLink className="ui-link primary" to="/admin/sales">
-                매출관리(상품/정산/이벤트)
+              <NavLink
+                className={(navData) =>
+                  navData.isActive ? "ui-link primary active" : "ui-link primary"
+                }
+                to="/admin/sales/companys"
+              >
+                매출관리
               </NavLink>
-               <NavLink className="ui-link primary" to="/admin/sales">
+               <NavLink className="ui-link primary" to="/admin/boards">
                 게시물관리
               </NavLink>
             </nav>
