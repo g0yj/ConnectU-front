@@ -9,4 +9,10 @@ const getCompanys = async (requestParams) => {
   return res.data;
 }
 
-export {getCompanys};
+// [GET] / company/{id}
+const getCompany = async (id) => {
+  console.log(TAG, `getCompany([GET]/company/{id})`, "id", id);
+  const res = await api.get(`/company/${id}`);
+  return res.data;
+}
+export {getCompanys, getCompany };

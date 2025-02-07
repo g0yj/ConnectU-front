@@ -9,10 +9,12 @@ import usePagination from "@/hooks/usePagination";
 import { useCollapse } from "react-collapsed";
 import dayjs from "dayjs";
 import ServiceCompany from "@/app/service/admin/service-companys";
+import CompanyManagementProvider from "./CompanyManagementProvider";
+import CompanySummary from "./CompanySummary";
 
 // 매출관리(1depth) > 업체관리(2depth)
 const CompanyManagementPage = () => {
-  
+
   const [isExpanded, setExpanded] = useState(true);
   const paginationData = usePagination();
 
@@ -34,13 +36,9 @@ const CompanyManagementPage = () => {
   const [selectedCompanyList, setCompanayList] = useState([]);
 
   // 상세조회를 위함
-  const [clickedCompanyName, setClickedCompanyName] = useState(null);
-  const [initialDetailTabsLabel, setInitialDetailTabsLabel] = useState(null);
+  const [companyDetails, setCompanyDetails] = useState(null);
   const { getCollapseProps } = useCollapse({ isExpanded });
-  const [clickedCompany, setClickedCompany] = useState(null);
-  const onChangeDetailTabsLabel = (tab) => {
-    setInitialDetailTabsLabel(tab);
-  };
+
 
 
   // 검색 조건
@@ -102,6 +100,18 @@ const CompanyManagementPage = () => {
 
   }; 
 
+  //setCompanyDetails
+const onClickCompanyName = useCallback(async (company) => {
+  setCompanyDetails(company);
+  try {
+    const data = await ServiceCompany.get(company.id);
+    setCompanyDetails(data);
+  } catch (error) {
+    console.error('에러발생', error);
+  }
+}, []);
+
+
   useEffect(() => {
     searchCompanyList();
   }, [
@@ -115,7 +125,7 @@ const CompanyManagementPage = () => {
 
   return (
 
-    <Split className="lib-split" sizes={[54, 46]} key = {clickedCompany?.id}>
+    <Split className="lib-split" sizes={[54, 46]} key = {companyDetails?.id}>
       <section className="ui-contents-wrap contents-member-management">
         <div className="ui-contents-inner">
           <div className="ui-location-wrap">
@@ -301,16 +311,17 @@ const CompanyManagementPage = () => {
           <div className="ui-list-table sp-mt-10">
             <table>
               <colgroup>
-                <col style={{ width: 60 }} />
+                <col style={{ width: "30px" }} />
+                <col style={{ width: "100px" }} />
+                <col style={{ width: "120px" }} />
+                <col style={{ width: "100px" }} />
+                <col style={{ width: "40px" }} />
+                <col style={{ width: "60px" }} />
+                <col style={{ width: "10px" }} />
               </colgroup>
               <thead>
-                <tr className="sorting">
                   <th>No</th>
-                  <th>
-                    <div className="flexCenter gap" style={{width:100, justifyContent: 'center', lignItems: 'center'}} >
-                      회사명
-                    </div>
-                  </th>
+                  <th>회사명</th>
                   <th>최근 거래 내용</th>
                   <th >회사번호</th>
                   <th >이메일</th>
@@ -320,17 +331,16 @@ const CompanyManagementPage = () => {
                       type="checkbox"
                     />
                   </th>
-                </tr>
               </thead>
               <tbody>
                 {companyList?.map((company, i) => {
                   return (
-                    <tr key={i} className={`${clickedCompany?.id === company?.id ? "active" : ""}`}>
+                    <tr key={i} className={`${companyDetails?.id === company?.id ? "active" : ""}`}>
                       <td>{company.listNumber}</td>
                       <td>
                         <Buttons
                           className="ui-link secondary-high small"
-                          
+                          onClick={() => onClickCompanyName(company)}
                         >
                           {company.name}
                         </Buttons>
@@ -368,8 +378,18 @@ const CompanyManagementPage = () => {
           </div>
         </div>
       </section>
- 
-     
+      
+      <div className="ui-contents-wrap inner-shadow">
+        <div className="ui-contents-inner">
+          <div className="layout-contents-width">
+            {companyDetails ? (
+              <CompanySummary company = {companyDetails} />
+            ) : (
+              <div> 회사를 선택하세용</div>
+            )}
+          </div>
+        </div>
+      </div> 
     </Split> 
     );
   
